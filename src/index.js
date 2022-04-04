@@ -1,26 +1,40 @@
 // Test import of a JavaScript module
-import { example } from '@/js/example'
+import 'pod-com-offline-sdk'
 
-// Test import of an asset
-import webpackLogo from '@/images/webpack-logo.svg'
+var SDK = new window.POD.OFFLINEPLAYERSDK({
+    containerId: "root",
+    env: "main",
+    logging: {
+        info: false,
+        debug: false,
+        error: true
+    },
+    styling: {
+        container: {
+            width: 300,
+            height: 300
+        }
+    }
+});
 
-// Test import of styles
-import '@/styles/index.scss'
+let btnStart = document.createElement('button');
+btnStart.innerText = 'Start';
+let btnStop = document.createElement('button');
+btnStop.innerText = 'Stop';
 
-// Appending to the DOM
-const logo = document.createElement('img')
-logo.src = webpackLogo
-
-const heading = document.createElement('h1')
-heading.textContent = example()
-
-// Test a background image url in CSS
-const imageBackground = document.createElement('div')
-imageBackground.classList.add('image')
-
-// Test a public folder asset
-const imagePublic = document.createElement('img')
-imagePublic.src = '/assets/example.png'
+btnStart.addEventListener("click", function (evt) {
+    evt.preventDefault();
+    SDK.playMedia({
+        hash: "DBPPGRD3PUPV4MNL",
+        quality: 240,
+        token: "ed24e37c7ee84313acf2805a80122f94",
+    });
+});
+btnStop.addEventListener("click", function (evt) {
+    evt.preventDefault();
+    SDK.destroyVideo()
+});
 
 const app = document.querySelector('#root')
-app.append(logo, heading, imageBackground, imagePublic)
+ app.append(btnStart, btnStop);
+
